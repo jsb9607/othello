@@ -247,12 +247,17 @@ int main(int argc, char *argv[]) {
 		}			
 	}
 
-
+	print_othello(gameboard);
 	check_color(gameboard, BW_NB);
+	
 	printf("총 알의 개수 : W = %d, B = %d\n", BW_NB[0], BW_NB[1]);
-	if(BW_NB[0]>BW_NB[1])	printf("승자는 W입니다.\n");
-	else if(BW_NB[0]<BW_NB[1])	printf("승자는 B입니다.\n");
-	else printf("동점입니다.\n");
+	
+	if(BW_NB[0]>BW_NB[1])	
+		printf("승자는 W입니다.\n");
+	else if(BW_NB[0]<BW_NB[1])	
+		printf("승자는 B입니다.\n");
+	else 
+		printf("동점입니다.\n");
 
 	
 	return 0;
