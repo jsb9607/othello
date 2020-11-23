@@ -6,7 +6,7 @@
 char gameboard[N][N];
 
 
-typedef struct {	//Player, 현재 turn의 Player, 오델로를 둔 위치
+typedef struct {	
 
 	char player[2];			//Player
 	int row;				//현재 Player가 둔 오델로의 행
@@ -138,15 +138,16 @@ int check_Turnover(char gameboard[][N], Player_state *state)
 		}
 	}	
 
-	return 0;
+	return 0;	
 }
+
 
 int isGameEnd(char gameboard[][N], Player_state *state)	
 {
 	int count = 0;
-	int BW_NB[2] = {0,};
+	int BW_NB[2] = {0,};	//BW_NB[0] : 'W'개수, BW_NB[1] : 'B'개수
 
-	// 'B', 'W'둘다 뒤집을 수 있는 알이 없을때
+	// ------'B', 'W'둘다 뒤집을 수 있는 알이 없을때
 	for(int k=0; k<2 ; k++)
 	{
 		state->turn = (state->turn + 1)%2;
@@ -161,14 +162,14 @@ int isGameEnd(char gameboard[][N], Player_state *state)
 	}
 
 
-	// 보드가 꽉 찼을때
+	// ------ 보드가 꽉 찼을때
 	if(check_blank(gameboard)==0)	
 	{
 		return 1;
 	}
 	
 
-	//한가지 색의 알만 있는 경우
+	// ------ 한가지 색의 알만 있는 경우
 	check_color(gameboard, BW_NB);
 	printf("\n----------------(White : %d, Black : %d)----------------\n", BW_NB[0], BW_NB[1]);
 	if(BW_NB[0] == BW_NB[0]+BW_NB[1] || BW_NB[1] == BW_NB[0]+BW_NB[1]) 
@@ -176,9 +177,9 @@ int isGameEnd(char gameboard[][N], Player_state *state)
 		return 1;
 	}
 	
-	return 0;
-	
+	return 0;	
 }
+
 
 int Turnover(char gameboard[][N], Player_state *state)
 {
@@ -204,9 +205,9 @@ int main(int argc, char *argv[]) {
 	state->player[0] = 'W';	//White player
 	state->player[1] = 'B';	//Black player
 	state->turn = 0;		//turn = 0-> White player turn , turn = 1-> Black player turn 
-
 	
-	int turn_num = 0;	//뒤집은 알의 개수
+	int turn_num = 0;		//뒤집은 알의 개수
+	int BW_NB[2] = {0,};	//BW_NB[0] : 'W'개수, BW_NB[1] : 'B'개수
 
 	
 	gameboard[N][N] = init_othello();
@@ -220,6 +221,7 @@ int main(int argc, char *argv[]) {
 
  		if(!check_Turnover(gameboard, state)) // 현재 player가 뒤집을 수 있는 알이 없는 경우 -> 다음 turn으로 자동으로 넘김
 		{
+			printf("현재 player가 뒤집을 수 있는 알이 존재하지 않습니다! ---- turn pass\n");
  			state->turn = (state->turn+1)%2;
 			continue;
 		}
@@ -242,9 +244,16 @@ int main(int argc, char *argv[]) {
 		else //뒤집을 수 있는 알이 없는 경우
 		{
 			printf("뒤집을 수 있는 알이 없다! 다시 입력하십시오.\n");			
-		}	
-		
+		}			
 	}
+
+
+	check_color(gameboard, BW_NB);
+	printf("총 알의 개수 : W = %d, B = %d\n", BW_NB[0], BW_NB[1]);
+	if(BW_NB[0]>BW_NB[1])	printf("승자는 W입니다.\n");
+	else if(BW_NB[0]<BW_NB[1])	printf("승자는 B입니다.\n");
+	else printf("동점입니다.\n");
+
 	
 	return 0;
 }
